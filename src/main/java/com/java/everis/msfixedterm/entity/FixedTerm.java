@@ -25,7 +25,7 @@ public class FixedTerm {
     private Customer customer;
 
     @NotNull
-    private String cardNumber;
+    private String accountNumber;
 
     private List<Person> holders;
 

@@ -19,7 +19,11 @@ public interface FixedTermService {
 
     Mono<Long> countCustomerAccountBank(String id);
 
+    Flux<FixedTerm> customerAccountBank(String id);
+    
     Mono<Customer> findCustomerById(String id);
     
-    public Mono<FixedTerm> findByCardNumber(String numberAccount);
+    public Mono<FixedTerm> findByAccountNumber(String numberAccount);
+    
+    Mono<Long> creditExpiredById(String id);
 }

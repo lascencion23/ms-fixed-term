@@ -20,7 +20,7 @@ public class FixedTermServiceImpl implements FixedTermService {
 	private final WebClient webClient;
 	private final ReactiveCircuitBreaker reactiveCircuitBreaker;
 	
-	String uri = "http://localhost:8090/api/ms-customer/customer/find/{id}";
+	String uri = "http://localhost:8090/api";
 	
 	public FixedTermServiceImpl(ReactiveResilience4JCircuitBreakerFactory circuitBreakerFactory) {
 		this.webClient = WebClient.builder().baseUrl(this.uri).build();
@@ -34,7 +34,7 @@ public class FixedTermServiceImpl implements FixedTermService {
     // Plan A
     @Override
     public Mono<Customer> findCustomerById(String id) {
-		return reactiveCircuitBreaker.run(webClient.get().uri(this.uri,id).accept(MediaType.APPLICATION_JSON).retrieve().bodyToMono(Customer.class),
+		return reactiveCircuitBreaker.run(webClient.get().uri(this.uri + "/ms-customer/customer/find/{id}",id).accept(MediaType.APPLICATION_JSON).retrieve().bodyToMono(Customer.class),
 				throwable -> {
 					return this.getDefaultCustomer();
 				});
@@ -46,6 +46,12 @@ public class FixedTermServiceImpl implements FixedTermService {
   		return customer;
   	}
     
+	@Override
+	public Mono<Long> creditExpiredById(String id) {
+		return webClient.get().uri(this.uri + "/ms-credit-charge/creditCharge/creditExpiredById/{id}", id)
+				.accept(MediaType.APPLICATION_JSON).retrieve().bodyToMono(Long.class);
+	}
+  	
     @Override
     public Mono<FixedTerm> create(FixedTerm ctaCorriente) {
         return fixedTermRepository.save(ctaCorriente);
@@ -80,10 +86,16 @@ public class FixedTermServiceImpl implements FixedTermService {
     public Mono<Long> countCustomerAccountBank(String id) {
         return fixedTermRepository.findByCustomerId(id).count();
     }
+    
+    @Override
+    public Flux<FixedTerm> customerAccountBank(String id) {
+        return fixedTermRepository.findByCustomerId(id);
+    }
 
     @Override
-    public Mono<FixedTerm> findByCardNumber(String numberAccount) {
-        return fixedTermRepository.findByCardNumber(numberAccount);
+    public Mono<FixedTerm> findByAccountNumber(String numberAccount) {
+        return fixedTermRepository.findByAccountNumber(numberAccount);
     }
+
     
 }
