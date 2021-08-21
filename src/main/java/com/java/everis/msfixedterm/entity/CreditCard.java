@@ -11,6 +11,8 @@ public class CreditCard {
     private String id;
 
     private String cardNumber;
+    
+    private String accountNumber;
 
     private Customer customer;
 

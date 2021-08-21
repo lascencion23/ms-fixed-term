@@ -7,5 +7,5 @@ import reactor.core.publisher.Mono;
 
 public interface FixedTermRepository extends ReactiveMongoRepository<FixedTerm, String> {
     Flux<FixedTerm> findByCustomerId(String id);
-    Mono<FixedTerm> findByCardNumber(String id);
+    Mono<FixedTerm> findByAccountNumber(String id);
 }
