@@ -54,6 +54,7 @@ public class FixedTermServiceImpl implements FixedTermService {
   	
     @Override
     public Mono<FixedTerm> create(FixedTerm ctaCorriente) {
+        ctaCorriente.setAccountNumber(FixedTerm.generateAccountNumber());
         return fixedTermRepository.save(ctaCorriente);
     }
 

@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Random;
 
 @Data
 @Builder
@@ -24,7 +25,6 @@ public class FixedTerm {
     @NotNull
     private Customer customer;
 
-    @NotNull
     private String accountNumber;
 
     private List<Person> holders;
@@ -48,5 +48,11 @@ public class FixedTerm {
     private Double commissionTransactions;
 
     private LocalDateTime date;
+
+    public static String generateAccountNumber() {
+        final String ACCOUNT_PREFIX = "200-";
+        Random random = new Random();
+        return ACCOUNT_PREFIX + random.nextInt(999999999);
+    }
 
 }
